@@ -1,57 +1,225 @@
-
 .showtime {
-    background-color: $main;
-}
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: $main;
+        height:56vh;
+    }
 
-.title {
-    background-color: $main;
-}
+    .title {
+        background-color: $main;
+        h1 {
+            margin:0px;
+            padding: 30px 30px;
+            font-size:3em;
+        }
+    }
 
-h1 {
-    margin:0px;
-    padding: 20px 30px;
-}
+    .info-card {
+        width:60vw;
+        height: auto;
+        min-height: 200px;
+        background-color: $main;
+        color: $seats;
+        align-self: center;
+    }
+
+    form {
+        display:flex;
+        flex-direction: column;
+        width:50vw;
+        align-self: center;
+        padding: 10px 0px;
+
+        input {
+            height: 40px;
+            margin: 10px 0px;
+            border-radius: 0px;
+            box-shadow: 2px 3px 4px gray;
+            border:none;
+
+            &:focus{
+                outline: $curtains;
+            }
+        }
+    }
 
 
-.seats {
-    background-color: $seats;
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 50px 40px;
-}
-
-button {
-    padding: 10px 20px;
-    border-radius: 20px;
-}
 
 
-.hints-section {
-    order:1;
-}
+    .seats {
+        background-color: $seats;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 50px 40px;
+        height:15vh;
+    }
 
-.hint-btn  {
-    order:2;
-}
+    button {
+        border:none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 1.5em;
+        color: $main;
+    }
 
-.score-section {
-    order: 3;
-}
+    .submit-btn {
+ 
+        background-color: $action;
+
+        &:hover, &:focus {
+            border:none;
+            color: $seats;
+            background-color: $curtains;
+            
+        }
+    }
+
+    .hint-btn  {
+        order:2;
+        border: 2px solid $main;
+        background-color: $seats;
+        position: relative;
+        top: -8vh;
+        width: calc( 40% * 50vw );
+
+        &:hover, &:focus {
+            border: 2px solid $highlights;
+            color: $highlights;
+        }
+
+    }
+
+    .hints-section {
+        order:1;
+    }
+
+    .score-section {
+        order: 3;
+    }
 
 
-h2 {
-    color: $highlights;
-}
+    h2 {
+        color: $highlights;
+    }
 
-h3 {
-    color:$highlights;
-}
+    h3 {
+        color:$highlights;
+    }
 
 
 
 
 
 @media screen and (min-width: 900px) {
+
+    .showtime {
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: $main;
+        height:60vh;
+    }
+
+    .title {
+        background-color: $main;
+        h1 {
+            margin:0px;
+            padding: 30px 30px;
+            font-size:3em;
+            color: $seats;
+        }
+    }
+
+    .info-card {
+        width:60vw;
+        height: auto;
+        min-height: 200px;
+        background-color: $main;
+        color: $seats;
+        align-self: center;
+        border: 1px solid lightgray;
+    }
+
+    form {
+        display:flex;
+        flex-direction: column;
+        width:50vw;
+        max-width: 600px;
+        align-self: center;
+        align-items: center;
+        padding: 10px 0px;
+
+        input {
+            height: 60px;
+            width:50vw;
+            margin: 20px 0px;
+            border-radius: 0px;
+            box-shadow: 2px 3px 4px gray;
+            border:none;
+        }
+    }
+
+
+    .seats {
+        background-color: $seats;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 50px 40px;
+        height:15vh;
+    }
+
+    button {
+        border-radius: 10px;
+        font-size: 1.5em;
+        color: $main;
+        
+    }
+
+    .submit-btn {    
+        background-color: $action;
+        width: 40%;
+        
+        &:hover, &:focus {
+            border:none;
+            color: $seats;
+            background-color: $curtains;
+           
+        }
+    }
+
+
+    .hint-btn  {
+        order:2;
+        border: 2px solid $main;
+        background-color: $seats;
+        width: calc( 40% * 50vw );
+        position: static;
+
+        &:hover, &:focus {
+            border: 2px solid $highlights;
+            color: $highlights;
+        }
+
+    }
+
+    .hints-section {
+        order:1;
+    }
+
+    .score-section {
+        order: 3;
+    }
+
+
+    h2 {
+        color: $highlights;
+    }
+
+    h3 {
+        color:$highlights;
+    }
 
 }
