@@ -9,6 +9,6 @@ This is a game to test your money trivia knowledge.
 - You will have to answer a few timed trivia questions about money and see how well you score. 
 - You will have three hints which you can use at your disposal. 
 
-Built with React & Flask.
+Built with React & Flask. Here is the backend [Flask Talk Money Mini-App Backend](https://github.com/HajaSChilds/talk-money-app-backend)
 
 Enjoy!!
