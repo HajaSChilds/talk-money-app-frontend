@@ -1,61 +1,108 @@
+
+//*************** TOP-CONTAINER (STAGE) *****************
 .showtime {
-        display:flex;
-        flex-direction: column;
-        justify-content: center;
-        background-color: $main;
-        height:56vh;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: $main;
+    height:56vh;
+
+    @media screen and (min-width: 900px) {  
+        height:60vh;
     }
 
-    .title {
-        background-color: $main;
+}
+
+//************ MAIN TITLE *******************
+.title {
+    background-color: $main;
+    h1 {
+        margin:0px;
+        padding: 30px 30px;
+        font-size:2.5em;
+        color: $seats;
+    }
+
+    @media screen and (min-width: 900px) {
+
         h1 {
-            margin:0px;
-            padding: 30px 30px;
             font-size:3em;
         }
     }
 
-    .info-card {
-        width:60vw;
-        height: auto;
-        min-height: 200px;
-        background-color: $main;
-        color: $seats;
-        align-self: center;
+}
+
+   
+.info-card {
+    width:60vw;
+    height: auto;
+    min-height: 200px;
+    background-color: $main;
+    color: $seats;
+    align-self: center;
+
+    @media screen and (min-width: 900px) {
+        
+        border: 1px solid lightgray;
     }
+}
 
-    form {
-        display:flex;
-        flex-direction: column;
-        width:50vw;
-        align-self: center;
-        padding: 10px 0px;
+form {
+    display:flex;
+    flex-direction: column;
+    width:50vw;
+    align-self: center;
+    padding: 10px 0px;
 
-        input {
-            height: 40px;
-            margin: 10px 0px;
+    input {
+        height: 40px;
+        margin: 10px 0px;
+        border-radius: 0px;
+        box-shadow: 2px 3px 4px gray;
+        border:none;
+
+        &:focus{
+            outline: $curtains;
+        }
+
+        @media screen and (min-width: 900px) {
+            
+            height: 50px;
+            width:50vw;
             border-radius: 0px;
             box-shadow: 2px 3px 4px gray;
             border:none;
-
-            &:focus{
-                outline: $curtains;
-            }
         }
+    }
+
+    @media screen and (min-width: 900px) {
+        max-width: 600px;
+        align-self: center;
+        align-items: center;
+        padding: 10px 0px;
+
+    }
+
     }
 
 
 
-
-    .seats {
+//**************** BOTTOM - CONTAINER (SEATS) ********************
+.seats {
         background-color: $seats;
         display:flex;
         justify-content: space-between;
         align-items: center;
         padding: 50px 40px;
         height:15vh;
+
+        @media screen and (min-width: 900px) {
+            height: 10vh;
+        }
     }
 
+
+// **************** BUTTONS ***************************    
     button {
         border:none;
         padding: 10px 20px;
@@ -68,12 +115,20 @@
  
         background-color: $action;
 
-        &:hover, &:focus {
+        &:hover, &:focus  {
             border:none;
             color: $seats;
             background-color: $curtains;
             
         }
+
+        &:active {
+            color:$action;
+        }
+
+        @media screen and (min-width: 900px) {
+        
+     }
     }
 
     .hint-btn  {
@@ -89,7 +144,23 @@
             color: $highlights;
         }
 
+        &:active {
+            background-color: $curtains;
+            color: $seats;
+            border: $seats;
+        }
+
+        @media screen and (min-width: 900px) {
+            width: calc( 40% * 50vw );
+            position: static;
+
+            &:hover, &:focus {
+                border: 2px solid $highlights;
+                color: $highlights;
+            }
+        }   
     }
+
 
     .hints-section {
         order:1;

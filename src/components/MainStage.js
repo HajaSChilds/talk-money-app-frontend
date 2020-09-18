@@ -23,6 +23,8 @@ export default class MainStage extends Component {
     this.getIntroMessages = this.getIntroMessages.bind(this); 
     this.getQuestions = this.getQuestions.bind(this);
     this.handlePlayerInput = this.handlePlayerInput.bind(this);
+    this.manageHints = this.manageHints.bind(this);
+    this.showHint = this.showHint.bind(this);
   }
 
     getIntroMessages() {
@@ -40,7 +42,20 @@ export default class MainStage extends Component {
                return phrase;
             })
 
-      }).catch("Error Retrieving Intro Messages")
+      }).catch(error => {
+          if (error.response) {
+              console.log("Error getting Intro Messages", error);
+              alert("There was a problem retrieving info for the game: ", error.response)
+          } else if (error.request) {
+              console.log("Error sending out message", error.request);
+              alert("Sorry there was a problem making a connection to the server", error.request);
+            // client never received a response, or request never left
+          } else {
+            // anything else
+              console.log("Something else went wrong");
+              alert("Something went wrong, please try again later");
+          }
+      })
         
     }
 
@@ -55,6 +70,21 @@ export default class MainStage extends Component {
 
     }
 
+    showHint(){
+      console.log("Hint showed")
+    }
+
+
+    manageHints() {
+       let currentHints = this.state.hints;
+       if (currentHints > 0) {
+          this.showHint();
+          currentHints -=1;
+          this.setState({ hints : currentHints})
+       } else {
+         alert("Sorry, you don't have any more hints left")
+       }
+    }
 
     componentDidMount() {
       if (this.state.gameState === 'INTRO') {
@@ -89,8 +119,8 @@ export default class MainStage extends Component {
           </form>
         </section>
         <section className="seats">
-          <button className="hint-btn">Receive Hint</button>
-          <Hints />
+          <button className="hint-btn" onClick={() => this.manageHints}>Receive Hint</button>
+          <Hints props={String(this.state.hints)}/>
           <Score />
         </section>
       </div>
