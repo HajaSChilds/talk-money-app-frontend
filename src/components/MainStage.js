@@ -12,10 +12,11 @@ export default class MainStage extends Component {
 
     this.state = {
       isloading: true,
-      gameState: 'INTRO',   // handle game status - : intro, on-game, conclusion
-      whichMessage: '',     // tracks which message the user is on  
-      whichQuestion: '',   //  tracks which question the user is on
-      score: 0,           //  handles game score:
+      gameState: 'INTRO', // handle game status - : intro, on-game, conclusion
+      allMessages: [],
+      whichMessage: '', // tracks which message the user is on
+      whichQuestion: '', //  tracks which question the user is on
+      score: 0, //  handles game score:
       hints: 3,
       user_success: 'PENDING',
     };
@@ -24,6 +25,7 @@ export default class MainStage extends Component {
     this.getQuestions = this.getQuestions.bind(this);
     this.handlePlayerInput = this.handlePlayerInput.bind(this);
     this.manageHints = this.manageHints.bind(this);
+    this.getHints = this.getHints.bind(this);
     this.showHint = this.showHint.bind(this);
   }
 
@@ -37,12 +39,21 @@ export default class MainStage extends Component {
           // Show messages on at a time
           // Update state once complete
           const introList = response.data
-          introList.map( phrase => {
-           this.setState({ whichMessage : phrase })
-               return phrase;
-            })
 
-      }).catch(error => {
+          this.setState({allMessages : introList})
+          
+
+           
+             
+                
+     
+          // // introList.map(phrase => {
+            
+          //   setTimeout(this.setState({ whichMessage : phrase }), 6000)
+              
+          //   })
+
+             }).catch(error => { 
           if (error.response) {
               console.log("Error getting Intro Messages", error);
               alert("There was a problem retrieving info for the game: ", error.response)
@@ -67,7 +78,8 @@ export default class MainStage extends Component {
 
 
     getQuestions() {
-
+      console.log('Gets questions');
+      
     }
 
     showHint(){
@@ -86,42 +98,50 @@ export default class MainStage extends Component {
        }
     }
 
+    getHints() {
+      let myHints = this.state.hints
+      return myHints;
+    }
+
     componentDidMount() {
       if (this.state.gameState === 'INTRO') {
           this.getIntroMessages()
+      }else if (this.state.gameState === 'ON-GAME'){
+         this.getQuestions()
       }
     }
 
   render() {
 
-    const gameState = this.state.gameState;
-    const instructions = this.instructions;
-    const game_navigation = this.handlePlayerInput;
+    let gameState = this.state.gameState;
+    let game_navigation = this.handlePlayerInput;
+    let num_hints = String(this.state.hints);
+    let my_score = String(this.state.score);
 
     return (
       <div className="main-stage">
         <section className="showtime">
-          <div className="title">
+            <div className="title">
+                {gameState === 'INTRO' ? (
+                  <h1> Welcome! </h1>
+                ) : (
+                  <h1>Let's Talk Money!!</h1>
+                )}
+            </div>
             {gameState === 'INTRO' ? (
-              <h1> Welcome! </h1>
-            ) : (
-              <h1>Let's Talk Money!!</h1>
-            )}
-          </div>
-          {gameState === 'INTRO' ? (
-            <div className="info-card">{this.state.whichMessage}</div>
-          ) : (
-            <div className="info-card">{game_navigation}</div>
-          )}
-          <form action="">
-            <input type="text" />
-            <button className="submit-btn">Submit</button>
-          </form>
+                <div className="info-card">{[...this.state.allMessages]}</div>
+              ) : (
+                <div className="info-card">{game_navigation}</div>
+              )}
+            <form action="">
+              <input type="text" />
+              <button className="submit-btn">Submit</button>
+            </form>
         </section>
         <section className="seats">
           <button className="hint-btn" onClick={() => this.manageHints}>Receive Hint</button>
-          <Hints props={String(this.state.hints)}/>
-          <Score />
+          <Hints hints={num_hints}></Hints>
+          <Score score={my_score}></Score>
         </section>
       </div>
     );

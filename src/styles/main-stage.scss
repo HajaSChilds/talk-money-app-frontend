@@ -32,11 +32,12 @@
 
 }
 
-   
+//******************* INFOCARD *****************   
 .info-card {
-    width:60vw;
+    width:80vw;
     height: auto;
-    min-height: 200px;
+    max-height: 40vh;
+    overflow: scroll;
     background-color: $main;
     color: $seats;
     align-self: center;
@@ -44,15 +45,19 @@
     @media screen and (min-width: 900px) {
         
         border: 1px solid lightgray;
+        width: 60vh;
+
     }
 }
 
+//****************** FORM **************************
 form {
     display:flex;
     flex-direction: column;
     width:50vw;
     align-self: center;
     padding: 10px 0px;
+    margin-bottom: 10px;
 
     input {
         height: 40px;
@@ -94,7 +99,7 @@ form {
         justify-content: space-between;
         align-items: center;
         padding: 50px 40px;
-        height:15vh;
+        height:8vh;
 
         @media screen and (min-width: 900px) {
             height: 10vh;
@@ -136,7 +141,7 @@ form {
         border: 2px solid $main;
         background-color: $seats;
         position: relative;
-        top: -8vh;
+        top: -6vh;
         width: calc( 40% * 50vw );
 
         &:hover, &:focus {
@@ -161,13 +166,34 @@ form {
         }   
     }
 
-
+//********** HINTS **************************
     .hints-section {
         order:1;
-    }
 
+        h3 {
+        color:$highlights;
+        font-size: 1em;
+        font-style: bold;
+        }
+
+        @media screen and (min-width: 768px) {
+            font-size: 1.5em;
+        }
+
+    }
+//*************** SCORES ***********************
     .score-section {
         order: 3;
+
+         h3 {
+        color:$highlights;
+        font-size: 1em;
+        font-style: bold;
+        }
+        @media screen and (min-width: 768px) {
+            font-size: 1.5em;
+        }
+
     }
 
 
