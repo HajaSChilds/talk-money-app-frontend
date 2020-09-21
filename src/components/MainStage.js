@@ -12,13 +12,14 @@ export default class MainStage extends Component {
 
     this.state = {
       isloading: true,
-      gameState: 'INTRO', // handle game status - : intro, on-game, conclusion
+      gameState: 'INTRO',      // handle game status - : intro, on-game, final
       allMessages: [],
-      whichMessage: '', // tracks which message the user is on
-      whichQuestion: '', //  tracks which question the user is on
-      score: 0, //  handles game score:
-      hints: 3,
-      user_success: 'PENDING',
+      allQuestions: [],
+      whichMessage: '',        // tracks which message the user is on
+      whichQuestion: '',       //  tracks which question the user is on
+      score: 0,                //  handles game score:
+      hints: 3,                //   tracks number of hints
+      user_success: 'PENDING', // tracks final outcome 'WINS' or 'LOSES'
     };
 
     this.getIntroMessages = this.getIntroMessages.bind(this); 
@@ -27,6 +28,9 @@ export default class MainStage extends Component {
     this.manageHints = this.manageHints.bind(this);
     this.getHints = this.getHints.bind(this);
     this.showHint = this.showHint.bind(this);
+    this.getUserStatus = this.getUserStatus.bind(this);
+    this.whichTitle = this.whichTitle.bind(this);
+  
   }
 
     getIntroMessages() {
@@ -41,34 +45,31 @@ export default class MainStage extends Component {
           const introList = response.data
 
           this.setState({allMessages : introList})
+          this.setState({whichMessage : response.data[0]});
           
+          for(let i=0; i < this.state.allMessages.length; i++) {
 
-           
-             
-                
-     
-          // // introList.map(phrase => {
             
-          //   setTimeout(this.setState({ whichMessage : phrase }), 6000)
-              
-          //   })
-
-             }).catch(error => { 
-          if (error.response) {
-              console.log("Error getting Intro Messages", error);
-              alert("There was a problem retrieving info for the game: ", error.response)
-          } else if (error.request) {
-              console.log("Error sending out message", error.request);
-              alert("Sorry there was a problem making a connection to the server", error.request);
-            // client never received a response, or request never left
-          } else {
-            // anything else
-              console.log("Something else went wrong");
-              alert("Something went wrong, please try again later");
+            
           }
-      })
-        
-    }
+          this.setState({gameState: 'ON-GAME'});
+         
+          }).catch(error => { 
+      if (error.response) {
+          console.log("Error getting Intro Messages", error);
+          alert("There was a problem retrieving info for the game: ", error.response);
+      } else if (error.request) {
+          console.log("Error sending out message", error.request);
+          alert("Sorry there was a problem making a connection to the server", error.request);
+        // client never received a response, or request never left
+      } else {
+        // anything else
+          console.log("Something else went wrong");
+          alert("Something went wrong, please try again later");
+      }
+  })
+    
+}
 
     
 
@@ -78,9 +79,28 @@ export default class MainStage extends Component {
 
 
     getQuestions() {
-      console.log('Gets questions');
-      
-    }
+      axios.get('https://localhost:5000/questions')
+
+      .then(response => {
+        console.log('questions: ', response);
+
+      })
+      .catch(error => {
+        if(error.response) {
+          console.log("Error getting questions", error);
+          alert("There was a problem retrieving the questions for the game: ", error.response);
+      } else if (error.request) {
+          console.log("Error sending out message", error.request);
+          alert("Sorry there was a problem making a connection to the server", error.request);
+        // client never received a response, or request never left
+      } else {
+        // anything else
+          console.log("Something else went wrong");
+          alert("Something went wrong, please try again later");
+        }  
+      });
+    } 
+
 
     showHint(){
       console.log("Hint showed")
@@ -103,13 +123,35 @@ export default class MainStage extends Component {
       return myHints;
     }
 
+    getUserStatus() {
+      let finalScore = this.state.user_success;
+      return finalScore;
+    }
+
     componentDidMount() {
       if (this.state.gameState === 'INTRO') {
-          this.getIntroMessages()
+          this.getIntroMessages();
       }else if (this.state.gameState === 'ON-GAME'){
-         this.getQuestions()
+         this.getQuestions();
+      }else {
+        this.getUserStatus();
       }
     }
+
+
+    whichTitle() {
+      if (this.state.gameState === 'INTRO') {
+        return "WELCOME!!!"
+      } else if (this.state.gameState === 'ON-GAME') {
+        return "LET'S TALK MONEY!!!";
+      }else {
+        if (this.state.user_success === 'WINS') {
+           return "CONGRATULATIONS!!! YOU WON!!!"
+        } else {
+          return "SORRY, YOU DID NOT WIN THE CHALLENGE"
+        }
+      }
+   }
 
   render() {
 
@@ -122,24 +164,20 @@ export default class MainStage extends Component {
       <div className="main-stage">
         <section className="showtime">
             <div className="title">
-                {gameState === 'INTRO' ? (
-                  <h1> Welcome! </h1>
-                ) : (
-                  <h1>Let's Talk Money!!</h1>
-                )}
+                  <h1>{this.whichTitle()}</h1>
             </div>
             {gameState === 'INTRO' ? (
-                <div className="info-card">{[...this.state.allMessages]}</div>
+                <div className="info-card">{this.state.whichMessage}</div>
               ) : (
                 <div className="info-card">{game_navigation}</div>
               )}
             <form action="">
               <input type="text" />
-              <button className="submit-btn">Submit</button>
+              <button className="submit-btn">Submit Answer</button>
             </form>
         </section>
         <section className="seats">
-          <button className="hint-btn" onClick={() => this.manageHints}>Receive Hint</button>
+          <button className="hint-btn" onClick={() => this.manageHints()}>Receive Hint</button>
           <Hints hints={num_hints}></Hints>
           <Score score={my_score}></Score>
         </section>
