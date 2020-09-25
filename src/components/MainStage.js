@@ -15,11 +15,13 @@ export default class MainStage extends Component {
       gameState: 'INTRO',      // handle game status - : intro, on-game, final
       allMessages: [],
       allQuestions: [],
-      whichMessage: '',        // tracks which message the user is on
-      whichQuestion: '',       //  tracks which question the user is on
-      score: 0,                //  handles game score:
-      hints: 3,                //   tracks number of hints
-      user_success: 'PENDING', // tracks final outcome 'WINS' or 'LOSES'
+      whichMessage: '',         // tracks which message the user is on
+      whichQuestion: {} || '',        // tracks which question the user is on
+      whichStyle: 'CAPS',       // tracks whether to send in all caps or not, caps, normal
+      whichClosingComments: '', // tracks which message to deliver depending on whether wins or loses
+      score: 0,                 //  handles game score:
+      hints: 3,                 //  tracks number of hints currently available
+      user_success: 'PENDING',  // tracks final outcome 'WINS' or 'LOSES'
     };
 
     this.getIntroMessages = this.getIntroMessages.bind(this); 
@@ -46,13 +48,25 @@ export default class MainStage extends Component {
 
           this.setState({allMessages : introList})
           this.setState({whichMessage : response.data[0]});
-          
-          for(let i=0; i < this.state.allMessages.length; i++) {
-
-            
-            
+          for(let i=1; i < this.state.allMessages.length; i++) {
+              let now = false;
+              m(now);
+              async function m(when) {
+                let promise = new Promise((resolve, reject) => {
+                  setTimeout(() => resolve(when= true), 3000);
+                });
+                    let result = await promise;
+                    return result;
+                } 
+                 
+               if (now) {
+                 this.setState({whichMessage: this.state.allMessages[i]});
+               }
+              continue;
           }
-          this.setState({gameState: 'ON-GAME'});
+            
+          
+          // setTimeout(this.setState({gameState: 'ON-GAME'}), 30000);
          
           }).catch(error => { 
       if (error.response) {
@@ -84,6 +98,12 @@ export default class MainStage extends Component {
       .then(response => {
         console.log('questions: ', response);
 
+        const questionsList = response.data;
+
+        this.setState({allQuestions : questionsList});
+
+
+
       })
       .catch(error => {
         if(error.response) {
@@ -104,6 +124,8 @@ export default class MainStage extends Component {
 
     showHint(){
       console.log("Hint showed")
+      let thisHint = this.state.whichQuestion.hint
+      alert(`Here is your hint: ${thisHint} `)
     }
 
 
@@ -139,7 +161,7 @@ export default class MainStage extends Component {
     }
 
 
-    whichTitle() {
+   whichTitle() {
       if (this.state.gameState === 'INTRO') {
         return "WELCOME!!!"
       } else if (this.state.gameState === 'ON-GAME') {
@@ -153,6 +175,19 @@ export default class MainStage extends Component {
       }
    }
 
+   whichMainText() {
+      if (this.gameState === 'INTRO') {
+        return this.state.whichMessage;
+      } else if (this.gameState === 'ON-GAME') {
+        return this.state.whichQuestion; 
+      }else {
+        if (this.state.user_success === 'WINS') {
+           return 
+        } else {
+          return "SORRY, YOU DID NOT WIN THE CHALLENGE"
+      }
+   }
+  }
   render() {
 
     let gameState = this.state.gameState;
@@ -169,7 +204,7 @@ export default class MainStage extends Component {
             {gameState === 'INTRO' ? (
                 <div className="info-card">{this.state.whichMessage}</div>
               ) : (
-                <div className="info-card">{game_navigation}</div>
+                <div className="info-card">{this.state.whichQuestion.question}</div>
               )}
             <form action="">
               <input type="text" />
