@@ -53,7 +53,7 @@ export default class MainStage extends Component {
               m(now);
               async function m(when) {
                 let promise = new Promise((resolve, reject) => {
-                  setTimeout(() => resolve(when= true), 3000);
+                  setTimeout(() => resolve(when = true), 3000);
                 });
                     let result = await promise;
                     return result;
