@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import Hints from './Hints.js'
-import Score from './Score.js'
+import Hints from './Hints.js';
+import Score from './Score.js';
+import Timer from './Timer.js';
  
 
 export default class MainStage extends Component {
@@ -12,7 +13,7 @@ export default class MainStage extends Component {
 
     this.state = {
       isloading: true,
-      gameState: 'INTRO',      // handle game status - : intro, on-game, final
+      gameState: 'INTRO',     // handle game status - : intro, on-game, final
       allMessages: [],
       allQuestions: [],
       whichMessage: '',         // tracks which message the user is on
@@ -48,24 +49,7 @@ export default class MainStage extends Component {
 
           this.setState({allMessages : introList})
           this.setState({whichMessage : response.data[0]});
-          for(let i=1; i < this.state.allMessages.length; i++) {
-              let now = false;
-              m(now);
-              async function m(when) {
-                let promise = new Promise((resolve, reject) => {
-                  setTimeout(() => resolve(when = true), 3000);
-                });
-                    let result = await promise;
-                    return result;
-                } 
-                 
-               if (now) {
-                 this.setState({whichMessage: this.state.allMessages[i]});
-               }
-              continue;
-          }
-            
-          
+
           // setTimeout(this.setState({gameState: 'ON-GAME'}), 30000);
          
           }).catch(error => { 
@@ -93,7 +77,7 @@ export default class MainStage extends Component {
 
 
     getQuestions() {
-      axios.get('https://localhost:5000/questions')
+      axios.get("http://localhost:5000/questions")
 
       .then(response => {
         console.log('questions: ', response);
@@ -101,6 +85,7 @@ export default class MainStage extends Component {
         const questionsList = response.data;
 
         this.setState({allQuestions : questionsList});
+        this.setState({whichQuestion: response.data[0]})
 
 
 
@@ -198,6 +183,7 @@ export default class MainStage extends Component {
     return (
       <div className="main-stage">
         <section className="showtime">
+             <Timer />
             <div className="title">
                   <h1>{this.whichTitle()}</h1>
             </div>
